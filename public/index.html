@@ -1,36 +1,45 @@
 <!doctype html>
 <html>
-<style>
-.card {
-  width: 140px;
-  height: 180px;
-  border: 2px solid #333;
-  border-radius: 12px;
-  background: linear-gradient(#fff, #ddd);
-  display: inline-flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 10px;
-  margin: 5px;
-}
+<head>
+  <meta charset="utf-8">
+  <title>ワンピースしりとり</title>
+  <!-- ★ ここがポイント -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-.card-type {
-  font-size: 12px;
-  text-align: center;
-  color: #555;
-}
+  <style>
+    .card {
+      width: 140px;
+      height: 180px;
+      border: 2px solid #333;
+      border-radius: 12px;
+      background: linear-gradient(#fff, #ddd);
+      display: inline-flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px;
+      margin: 5px;
+    }
 
-.card-word {
-  font-size: 20px;
-  text-align: center;
-  font-weight: bold;
-}
+    .card-type {
+      font-size: 12px;
+      text-align: center;
+      color: #555;
+    }
 
-input, textarea, select {
-  font-size: 16px;           /* iPhoneで拡大されない文字サイズ */
-  -webkit-text-size-adjust: 100%; /* 自動拡大を抑制 */
-}
-</style>
+    .card-word {
+      font-size: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* ★ 入力欄の拡大防止 */
+    input, textarea, select {
+      font-size: 16px;           /* 16px以上で拡大抑制 */
+      line-height: 1.2;          /* iOS Safari向け */
+      -webkit-text-size-adjust: 100%; /* 自動拡大防止 */
+    }
+  </style>
+</head>
 <body>
 
 <h2>ワンピースしりとり</h2>
@@ -42,16 +51,14 @@ input, textarea, select {
 <button onclick="restart()">再スタート</button>
 <button onclick="undo()">戻す</button>
 
-
 <hr>
 
 <div>
   <h3>開始文字</h3>
   <div id="kana"></div>
 
-<h3>場のカード</h3>
-<div id="field"></div>
-
+  <h3>場のカード</h3>
+  <div id="field"></div>
 </div>
 
 <hr>
