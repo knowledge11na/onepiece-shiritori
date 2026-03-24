@@ -1,0 +1,71 @@
+<!doctype html>
+<html>
+<style>
+.card {
+  width: 140px;
+  height: 180px;
+  border: 2px solid #333;
+  border-radius: 12px;
+  background: linear-gradient(#fff, #ddd);
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px;
+  margin: 5px;
+}
+
+.card-type {
+  font-size: 12px;
+  text-align: center;
+  color: #555;
+}
+
+.card-word {
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+</style>
+<body>
+
+<h2>ワンピースしりとり</h2>
+
+<input id="name" placeholder="名前">
+<input id="room" placeholder="部屋ID">
+<button onclick="join()">入室</button>
+<button onclick="start()">開始</button>
+<button onclick="restart()">再スタート</button>
+<button onclick="undo()">戻す</button>
+
+
+<hr>
+
+<div>
+  <h3>開始文字</h3>
+  <div id="kana"></div>
+
+<h3>場のカード</h3>
+<div id="field"></div>
+
+</div>
+
+<hr>
+
+<h3>プレイヤー</h3>
+<div id="players"></div>
+
+<hr>
+
+<h3>手札</h3>
+<div id="hand"></div>
+
+<hr>
+
+<input id="word" placeholder="ことば">
+<button onclick="play()">出す</button>
+<button onclick="discard()">捨てる</button>
+<div id="selected"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
