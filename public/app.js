@@ -6,7 +6,8 @@ function join() {
   const nameInput = document.getElementById("name");
   const roomInput = document.getElementById("room");
 
-  ws = new WebSocket("ws://" + location.host);
+// Render デプロイ後の URL に書き換え
+ws = new WebSocket("wss://<your-render-service>.onrender.com");
 
   ws.onopen = () => {
     ws.send(JSON.stringify({
