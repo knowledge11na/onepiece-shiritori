@@ -7,8 +7,7 @@ function join() {
   const roomInput = document.getElementById("room");
 
 // Render デプロイ後の URL に書き換え
-ws = new WebSocket("wss://<your-render-service>.onrender.com");
-
+ws = new WebSocket("wss://onepiece-shiritori-server.onrender.com");
   ws.onopen = () => {
     ws.send(JSON.stringify({
       type: "join",
