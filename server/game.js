@@ -1,4 +1,5 @@
 import { createDeck, draw, randomKana, getLastKana } from "./util.js";
+import { createDeck, draw, randomKana, getLastKana, toHiragana } from "./util.js";
 
 export function handleMessage(ws, room, msg) {
   const type = msg.type;
@@ -74,7 +75,11 @@ if (type === "start") {
     const word = msg.word;
 
 const allowedStarts = room.lastWord ? getLastKana(room.lastWord) : null;
-if (allowedStarts && !allowedStarts.includes(word[0])) {
+
+// ★ここ追加（超重要）
+const firstChar = toHiragana(word[0]);
+
+if (allowedStarts && !allowedStarts.includes(firstChar)) {
   room.locked = false;
   return;
 }
@@ -101,6 +106,7 @@ if (allowedStarts && !allowedStarts.includes(word[0])) {
     room.lastWord = word;
     room.lastKana = getLastKana(word);
     room.lastCardType = msg.cardType;
+
 
     p.hand = p.hand.filter(c => c.id !== msg.cardId);
 
