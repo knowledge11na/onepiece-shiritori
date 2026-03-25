@@ -1,4 +1,3 @@
-import { createDeck, draw, randomKana, getLastKana } from "./util.js";
 import { createDeck, draw, randomKana, getLastKana, toHiragana } from "./util.js";
 
 export function handleMessage(ws, room, msg) {
