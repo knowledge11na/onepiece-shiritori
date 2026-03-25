@@ -62,65 +62,73 @@ if (type === "start") {
 }
 
   // ===== プレイ
-  if (type === "play") {
-    if (room.phase !== "playing") return;
+if (type === "play") {
+  if (room.phase !== "playing") return;
 
-    const p = room.players.get(ws.playerId);
-    if (!p) return;
+  const p = room.players.get(ws.playerId);
+  if (!p) return;
 
-    if (room.locked) return;
-    room.locked = true;
+  if (room.locked) return;
+  room.locked = true;
 
-    const word = msg.word;
+  // ★① まずこれ
+  const word = msg.word;
 
-const allowedStarts = room.lastWord ? getLastKana(room.lastWord) : null;
+  // ★② 最初の文字を正規化
+  const chars = [...toHiragana(word.normalize("NFC"))];
+  const firstChar = chars[0];
 
-const firstChar = toHiragana([...word.normalize("NFC")][0]);
+  // ★③ 前の単語から判定
+const allowedStarts = room.lastWord
+  ? getLastKana(room.lastWord).map(k => toHiragana(k))
+  : null;
 
-if (allowedStarts && !allowedStarts.includes(firstChar)) {
-  room.locked = false;
-  return;
-}
-
-    if (room.usedWords.has(word)) {
-      room.locked = false;
-      return;
-    }
-
-    if (!p.hand.find(c => c.id === msg.cardId)) {
-      room.locked = false;
-      return;
-    }
-
-    // 履歴保存
-    room.history.push({
-      lastWord: room.lastWord,
-      lastKana: room.lastKana,
-      lastCardType: room.lastCardType,
-      hands: new Map([...room.players].map(([id, p]) => [id, [...p.hand]]))
-    });
-
-    room.usedWords.add(word);
-    room.lastWord = word;
-    room.lastKana = getLastKana(word);
-    room.lastCardType = msg.cardType;
-
-
-    p.hand = p.hand.filter(c => c.id !== msg.cardId);
-
-    if (p.hand.length === 0 && !room.ranking.includes(p.id)) {
-      room.ranking.push(p.id);
-    }
-
-    if (room.ranking.length === room.order.length - 1) {
-      room.phase = "finished";
-    }
-
-    broadcast(room);
-
-    setTimeout(() => room.locked = false, 100);
+  if (allowedStarts && !allowedStarts.includes(firstChar)) {
+    room.locked = false;
+    return;
   }
 
+  if (room.usedWords.has(word)) {
+    room.locked = false;
+    return;
+  }
+
+  if (!p.hand.find(c => c.id === msg.cardId)) {
+    room.locked = false;
+    return;
+  }
+
+  // 履歴保存
+  room.history.push({
+    lastWord: room.lastWord,
+    lastKana: room.lastKana,
+    lastCardType: room.lastCardType,
+    hands: new Map([...room.players].map(([id, p]) => [id, [...p.hand]]))
+  });
+
+  // ★④ 登録
+  room.usedWords.add(word);
+  room.lastWord = word;
+
+  const lastKanaList = getLastKana(word);
+  room.lastKana = lastKanaList[0]; // 表示用だけ1文字
+
+  room.lastCardType = msg.cardType;
+
+  p.hand = p.hand.filter(c => c.id !== msg.cardId);
+
+  if (p.hand.length === 0 && !room.ranking.includes(p.id)) {
+    room.ranking.push(p.id);
+  }
+
+  if (room.ranking.length === room.order.length - 1) {
+    room.phase = "finished";
+  }
+
+  broadcast(room);
+
+  setTimeout(() => room.locked = false, 100);
+}
   // ===== 捨てる
   if (type === "discard") {
     if (room.phase !== "playing") return;
