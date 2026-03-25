@@ -75,8 +75,7 @@ if (type === "start") {
 
 const allowedStarts = room.lastWord ? getLastKana(room.lastWord) : null;
 
-// ★ここ追加（超重要）
-const firstChar = toHiragana(word[0]);
+const firstChar = toHiragana([...word.normalize("NFC")][0]);
 
 if (allowedStarts && !allowedStarts.includes(firstChar)) {
   room.locked = false;

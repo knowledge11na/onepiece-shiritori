@@ -71,6 +71,11 @@ export function randomKana() {
 export function getLastKana(word) {
   if (!word) return [];
 
+  word = word.normalize("NFC");
+  word = toHiragana(word);
+
+  const c = [...word];
+
   // ① カタカナ → ひらがな
   word = toHiragana(word);
 
