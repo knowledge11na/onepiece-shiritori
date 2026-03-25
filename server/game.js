@@ -75,8 +75,7 @@ if (type === "play") {
   const word = msg.word;
 
   // ★② 最初の文字を正規化
-  const chars = [...toHiragana(word.normalize("NFC"))];
-  const firstChar = chars[0];
+const firstChar = toHiragana(word.normalize("NFC")).charAt(0);
 
   // ★③ 前の単語から判定
 const allowedStarts = room.lastWord

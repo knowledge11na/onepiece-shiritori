@@ -76,10 +76,6 @@ export function getLastKana(word) {
 
   const c = [...word];
 
-  // ① カタカナ → ひらがな
-  word = toHiragana(word);
-
-  const c = [...word];
 
   // ② 長音対応（ー）
   let last = c[c.length - 1];
