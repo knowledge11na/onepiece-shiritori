@@ -2,6 +2,12 @@ let selectedCard = null;
 let ws;
 let playerId = Math.random().toString(36).slice(2);
 
+function toHiragana(str) {
+  return str.replace(/[ァ-ン]/g, s =>
+    String.fromCharCode(s.charCodeAt(0) - 0x60)
+  );
+}
+
 function join() {
   const nameInput = document.getElementById("name");
   const roomInput = document.getElementById("room");
@@ -85,14 +91,15 @@ function play() {
     return;
   }
 
-  ws.send(JSON.stringify({
-    type: "play",
-    roomId: roomInput.value,
-    word: wordInput.value,
-    cardId: selectedCard.id,
-    cardType: selectedCard.type
-  }));
+const word = toHiragana(wordInput.value.normalize("NFC"));
 
+ws.send(JSON.stringify({
+  type: "play",
+  roomId: roomInput.value,
+  word: word, // ←こっちにする！！
+  cardId: selectedCard.id,
+  cardType: selectedCard.type
+}));
 selectedCard = null;
 
 // 見た目リセット
